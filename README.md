@@ -2,6 +2,8 @@
 
 A modern, responsive personal website showcasing my professional portfolio and skills.
 
+Last updated: 2025-06-01 15:00:02
+
 ## Features
 - Clean and modern design
 - Responsive layout

@@ -1,4 +1,4 @@
-# Dawit T Haile - Personal Website
+# Dawit Haile - Personal Website
 
 A modern, responsive personal website showcasing my professional portfolio and skills.
 

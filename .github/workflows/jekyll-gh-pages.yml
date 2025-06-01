@@ -18,7 +18,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: https://dawit-th.github.io/personal-website/
+      url: https://dawit-th.github.io/
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

@@ -228,22 +228,7 @@ h2 {
 }
 
 /* Social Links */
-.social-links {
-    margin-top: 2rem;
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-}
 
-.social-icon {
-    color: var(--text-color);
-    font-size: 1.5rem;
-    transition: color 0.3s ease;
-}
-
-.social-icon:hover {
-    color: var(--primary-color);
-}
 
 /* Footer */
 footer {

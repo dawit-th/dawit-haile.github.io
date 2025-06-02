@@ -17,7 +17,7 @@ contactForm.addEventListener('submit', function(e) {
     contactForm.reset();
 });
 
-// Debug social links
+// Handle social links
 const socialLinks = document.querySelectorAll('.social-icon');
 console.log('Found social links:', socialLinks.length);
 
@@ -27,7 +27,11 @@ socialLinks.forEach(link => {
         console.log('Clicked:', this.href);
         console.log('Font Awesome loaded:', document.querySelector('.fab') !== null);
         console.log('Event prevented:', e.defaultPrevented);
-        return true; // Ensure the link works
+        
+        // Prevent default behavior and open in new tab
+        e.preventDefault();
+        window.open(this.href, '_blank');
+        return false;
     });
 });
 
@@ -41,6 +45,15 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Font Awesome icons found:', icons.length);
     icons.forEach(icon => {
         console.log('Icon:', icon);
+    });
+});
+
+// Force focus on links
+document.addEventListener('DOMContentLoaded', () => {
+    const links = document.querySelectorAll('a');
+    links.forEach(link => {
+        link.style.cursor = 'pointer';
+        link.style.userSelect = 'none';
     });
 });
 

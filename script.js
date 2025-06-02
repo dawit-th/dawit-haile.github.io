@@ -1,17 +1,47 @@
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href');
-        if (targetId && targetId !== '#') {
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        }
+// Smooth scrolling// Form submission handling
+const contactForm = document.getElementById('contact-form');
+const successMessage = document.createElement('div');
+successMessage.className = 'success-message';
+successMessage.style.display = 'none';
+successMessage.style.color = 'var(--primary-color)';
+successMessage.style.textAlign = 'center';
+successMessage.style.marginTop = '1rem';
+contactForm.parentNode.insertBefore(successMessage, contactForm.nextSibling);
+
+contactForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // Show loading state
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.textContent = 'Sending...';
+    submitButton.disabled = true;
+
+    // Submit the form
+    const formData = new FormData(this);
+    const response = await fetch(this.action, {
+        method: 'POST',
+        body: formData
     });
+
+    const data = await response.json();
+
+    if (response.ok) {
+        successMessage.textContent = 'Thank you for your message! I will get back to you soon.';
+        successMessage.style.display = 'block';
+        this.reset();
+    } else {
+        successMessage.textContent = 'Failed to send message. Please try again.';
+        successMessage.style.display = 'block';
+        successMessage.style.color = 'red';
+    }
+
+    // Reset loading state
+    setTimeout(() => {
+        submitButton.textContent = originalText;
+        submitButton.disabled = false;
+        successMessage.style.display = 'none';
+    }, 3000);
 });
 
 // Smooth scrolling for navigation links

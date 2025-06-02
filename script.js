@@ -14,32 +14,29 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Form submission handling
-const contactForm = document.getElementById('contact-form');
-contactForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    // Here you would typically send the form data to a backend server
-    alert('Thank you for your message! I will get back to you soon.');
-    contactForm.reset();
+// Smooth scrolling for navigation links
+const navLinks = document.querySelectorAll('nav a[href^="#"]');
+navLinks.forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId && targetId !== '#') {
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        }
+    });
 });
 
 // Handle social links
 const socialLinks = document.querySelectorAll('.social-icon');
-console.log('Found social links:', socialLinks.length);
-
 socialLinks.forEach(link => {
-    console.log('Social link:', link.href);
     link.addEventListener('click', function(e) {
-        console.log('Clicked:', this.href);
-        // Check if Font Awesome is loaded by looking for any .fab element
-        const isFontAwesomeLoaded = document.querySelector('.fab') !== null;
-        console.log('Font Awesome loaded:', isFontAwesomeLoaded);
-        console.log('Event prevented:', e.defaultPrevented);
-        
-        // Prevent default behavior and open in new tab
         e.preventDefault();
         window.open(this.href, '_blank');
-        return false;
     });
 });
 

@@ -32,11 +32,16 @@ navLinks.forEach(anchor => {
 });
 
 // Handle social links
-const socialLinks = document.querySelectorAll('.social-icon');
-socialLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        window.open(this.href, '_blank');
+// Remove event listeners and let the browser handle the links normally
+document.addEventListener('DOMContentLoaded', () => {
+    const socialLinks = document.querySelectorAll('.social-icon');
+    socialLinks.forEach(link => {
+        // Remove any existing click handlers
+        link.onclick = null;
+        // Add pointer cursor
+        link.style.cursor = 'pointer';
+        // Add user-select prevention
+        link.style.userSelect = 'none';
     });
 });
 

@@ -10,36 +10,59 @@ successMessage.style.padding = '1rem';
 successMessage.style.borderRadius = '0.5rem';
 successMessage.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
 successMessage.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+successMessage.style.transition = 'opacity 0.3s ease';
 contactForm.parentNode.insertBefore(successMessage, contactForm.nextSibling);
+
+// Cache form elements
+const nameInput = contactForm.querySelector('input[name="name"]');
+const emailInput = contactForm.querySelector('input[name="email"]');
+const messageInput = contactForm.querySelector('textarea[name="message"]');
+const submitButton = contactForm.querySelector('button[type="submit"]');
 
 // Add validation
 const validateForm = () => {
-    const name = contactForm.querySelector('input[name="name"]').value.trim();
-    const email = contactForm.querySelector('input[name="email"]').value.trim();
-    const message = contactForm.querySelector('textarea[name="message"]').value.trim();
-
-    if (!name) {
-        successMessage.textContent = 'Please enter your name.';
-        successMessage.style.display = 'block';
-        successMessage.style.color = 'red';
-        return false;
+    let isValid = true;
+    
+    // Clear previous errors
+    successMessage.style.display = 'none';
+    
+    // Validate name
+    if (!nameInput.value.trim()) {
+        displayError('Please enter your name.');
+        isValid = false;
     }
 
+    // Validate email
+    const email = emailInput.value.trim();
     if (!email || !email.includes('@')) {
-        successMessage.textContent = 'Please enter a valid email address.';
-        successMessage.style.display = 'block';
-        successMessage.style.color = 'red';
-        return false;
+        displayError('Please enter a valid email address.');
+        isValid = false;
     }
 
+    // Validate message
+    const message = messageInput.value.trim();
     if (!message || message.length < 10) {
-        successMessage.textContent = 'Please enter a message (at least 10 characters).';
-        successMessage.style.display = 'block';
-        successMessage.style.color = 'red';
-        return false;
+        displayError('Please enter a message (at least 10 characters).');
+        isValid = false;
     }
 
-    return true;
+    return isValid;
+};
+
+// Helper function to display errors
+const displayError = (message) => {
+    successMessage.textContent = message;
+    successMessage.style.display = 'block';
+    successMessage.style.color = 'red';
+    successMessage.style.opacity = 1;
+};
+
+// Helper function to hide message
+const hideMessage = () => {
+    successMessage.style.opacity = '0';
+    setTimeout(() => {
+        successMessage.style.display = 'none';
+    }, 300);
 };
 
 contactForm.addEventListener('submit', async function(e) {
@@ -49,7 +72,6 @@ contactForm.addEventListener('submit', async function(e) {
     if (!validateForm()) return;
 
     // Show loading state
-    const submitButton = this.querySelector('button[type="submit"]');
     const originalText = submitButton.textContent;
     submitButton.textContent = 'Sending...';
     submitButton.disabled = true;
@@ -59,7 +81,10 @@ contactForm.addEventListener('submit', async function(e) {
         const formData = new FormData(this);
         const response = await fetch(this.action, {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
         });
 
         const data = await response.json();
@@ -67,51 +92,34 @@ contactForm.addEventListener('submit', async function(e) {
         if (response.ok) {
             successMessage.textContent = 'Thank you for your message! I will get back to you soon.';
             successMessage.style.display = 'block';
+            successMessage.style.color = 'var(--primary-color)';
             this.reset();
+            hideMessage();
         } else {
             const error = data.error || 'Failed to send message. Please try again.';
-            successMessage.textContent = error;
-            successMessage.style.display = 'block';
-            successMessage.style.color = 'red';
+            displayError(error);
         }
     } catch (error) {
-        successMessage.textContent = 'An error occurred. Please try again.';
-        successMessage.style.display = 'block';
-        successMessage.style.color = 'red';
+        displayError('An error occurred. Please try again.');
         console.error('Form submission error:', error);
     }
 
     // Reset loading state
-    setTimeout(() => {
-        submitButton.textContent = originalText;
-        submitButton.disabled = false;
-        if (successMessage.style.color !== 'var(--primary-color)') {
-            successMessage.style.display = 'none';
-        }
-    }, 3000);
+    submitButton.textContent = originalText;
+    submitButton.disabled = false;
 });
 
 // Add real-time validation
-contactForm.addEventListener('input', function(e) {
-    const target = e.target;
-    const error = document.querySelector('.error');
-    if (error) error.remove();
-
-    if (target.name === 'email') {
-        const email = target.value.trim();
-        if (email && !email.includes('@')) {
-            const error = document.createElement('div');
-            error.className = 'error';
-            error.style.color = 'red';
-            error.style.fontSize = '0.9rem';
-            error.textContent = 'Please enter a valid email address.';
-            target.parentNode.insertBefore(error, target.nextSibling);
-        }
+emailInput.addEventListener('input', function() {
+    const email = this.value.trim();
+    if (email && !email.includes('@')) {
+        displayError('Please enter a valid email address.');
+    } else {
+        hideMessage();
     }
 });
 
 // Smooth scrolling for navigation links
-const navLinks = document.querySelectorAll('nav a[href^="#"]');
 navLinks.forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();

@@ -25,26 +25,15 @@ socialLinks.forEach(link => {
     console.log('Social link:', link.href);
     link.addEventListener('click', function(e) {
         console.log('Clicked:', this.href);
-        console.log('Font Awesome loaded:', document.querySelector('.fab') !== null);
+        // Check if Font Awesome is loaded by looking for any .fab element
+        const isFontAwesomeLoaded = document.querySelector('.fab') !== null;
+        console.log('Font Awesome loaded:', isFontAwesomeLoaded);
         console.log('Event prevented:', e.defaultPrevented);
         
         // Prevent default behavior and open in new tab
         e.preventDefault();
         window.open(this.href, '_blank');
         return false;
-    });
-});
-
-// Check if Font Awesome is loaded
-console.log('Font Awesome loaded:', document.querySelector('.fab') !== null);
-
-// Check if icons are visible
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded');
-    const icons = document.querySelectorAll('.fab');
-    console.log('Font Awesome icons found:', icons.length);
-    icons.forEach(icon => {
-        console.log('Icon:', icon);
     });
 });
 

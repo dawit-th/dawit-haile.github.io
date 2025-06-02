@@ -17,6 +17,18 @@ contactForm.addEventListener('submit', function(e) {
     contactForm.reset();
 });
 
+// Debug social links
+const socialLinks = document.querySelectorAll('.social-icon');
+socialLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+        console.log('Clicked:', this.href);
+        console.log('Font Awesome loaded:', document.querySelector('.fab') !== null);
+    });
+});
+
+// Check if Font Awesome is loaded
+console.log('Font Awesome loaded:', document.querySelector('.fab') !== null);
+
 // Add scroll animation to sections
 const sections = document.querySelectorAll('section');
 const observerOptions = {

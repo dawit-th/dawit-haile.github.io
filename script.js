@@ -19,15 +19,30 @@ contactForm.addEventListener('submit', function(e) {
 
 // Debug social links
 const socialLinks = document.querySelectorAll('.social-icon');
+console.log('Found social links:', socialLinks.length);
+
 socialLinks.forEach(link => {
+    console.log('Social link:', link.href);
     link.addEventListener('click', function(e) {
         console.log('Clicked:', this.href);
         console.log('Font Awesome loaded:', document.querySelector('.fab') !== null);
+        console.log('Event prevented:', e.defaultPrevented);
+        return true; // Ensure the link works
     });
 });
 
 // Check if Font Awesome is loaded
 console.log('Font Awesome loaded:', document.querySelector('.fab') !== null);
+
+// Check if icons are visible
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded');
+    const icons = document.querySelectorAll('.fab');
+    console.log('Font Awesome icons found:', icons.length);
+    icons.forEach(icon => {
+        console.log('Icon:', icon);
+    });
+});
 
 // Add scroll animation to sections
 const sections = document.querySelectorAll('section');

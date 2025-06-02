@@ -189,6 +189,19 @@ h2 {
     align-items: center;
 }
 
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+.contact-info p {
+    color: var(--light-text);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
 #contact-form {
     display: flex;
     flex-direction: column;
